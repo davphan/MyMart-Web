@@ -54,7 +54,7 @@ export function NavLink({
 export function PrimaryButton({ children, className, ...rest } : ButtonProps) {
   return (
     <button
-    {...rest}
+      {...rest}
       className={`px-3 py-2 rounded-full bg-primary hover:opacity-80 text-on_primary ${className}`}
     >
       {children}

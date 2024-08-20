@@ -3,6 +3,7 @@
 import { signupWithCredentials } from "@/packages/auth/actions";
 import { NavLink, PrimaryButton } from "@/packages/components/buttons";
 import { FormInputText } from "@/packages/components/inputs";
+import { wiggle, wiggle2 } from "@/packages/util/animations";
 import { SignupState } from "@/packages/util/definitions";
 import { useState } from "react";
 import { useFormState } from "react-dom";
@@ -14,29 +15,42 @@ export default function SignUpScreen() {
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
 
-  let initialState: SignupState = {};
+  const [shakeErrors, setShakeErrors] = useState(false);
+
+  let initialState: SignupState = { errors: {}, message: null };
   const [formState, formAction] = useFormState(signupWithCredentials, initialState)
 
-  // async function signupWithCredentials() {
-  //   if (email !== reEmail) {
-  //     if (!state.errors) {
-  //       state.errors = {};
-  //     }
-  //     state.errors.email = ["Emails do not match"];
-  //   }
-  //   if (password !== rePassword) {
-  //     if (!state.errors) {
-  //       state.errors = {};
-  //     }
-  //     state.errors.password = ["Passwords do not match"];
-  //   }
+  function matchEmails(val: string) {
+    setReEmail(val)
+    if (email !== val) {
+      formState.errors.reemail = ['Emails do not match.'];
+    } else {
+      delete formState.errors.reemail;
+    }
+  }
 
-  //   if (state.errors) {
-  //     state = {};
-  //   }
+  function matchPasswords(val: string) {
+    setRePassword(val)
+    if (password !== val) {
+      formState.errors.repassword = ['Passwords do not match.']
+    } else {
+      delete formState.errors.repassword;
+    }
+  }
 
-  //   state = await signupWithCredentialsAction(username, email, password);
-  // }
+  function submitForm(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    matchEmails(reEmail);
+    matchPasswords(rePassword);
+    if (Object.keys(formState.errors).length) {
+      const errorComponents: NodeListOf<Element> = document.querySelectorAll('.form-error');
+      errorComponents.forEach((component) => {
+        component.animate(wiggle, { duration: 300, iterations: 1 })
+      })
+    } else {
+      e.currentTarget.form?.requestSubmit();
+    }
+  }
 
   return (
     <div className='flex justify-center items-center'>
@@ -45,34 +59,48 @@ export default function SignUpScreen() {
         <FormInputText
           label='Username'
           name='username'
+          errors={formState.errors.username}
+          onChange={e => delete formState.errors.username}
         />
         <FormInputText
           label='Email'
           name='email'
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            delete formState.errors.email;
+            delete formState.errors.reemail;
+          }}
+          errors={formState.errors.email}
         />
         <FormInputText
           label='Re-Enter Email'
-          name='reemail'
           value={reEmail}
-          onChange={e => setReEmail(e.target.value)}
+          onChange={(e) => {
+            matchEmails(e.target.value);
+          }}
+          errors={formState.errors.reemail}
         />
         <FormInputText
           label='Password'
           name='password'
           type='password'
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            delete formState.errors.password;
+            delete formState.errors.repassword;
+          }}
+          errors={formState.errors.password}
         />
         <FormInputText
           label='Re-Enter Password'
-          name='repassword'
           type='password'
           value={rePassword}
-          onChange={e => setRePassword(e.target.value)}
+          onChange={e => matchPasswords(e.target.value)}
+          errors={formState.errors.repassword}
         />
-        <PrimaryButton className="m-3" type="submit">
+        <PrimaryButton className="m-3" onClick={e => submitForm(e)}>
           Sign Up
         </PrimaryButton>
         <NavLink href='/'>Go Home</NavLink>

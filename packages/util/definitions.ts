@@ -17,19 +17,24 @@ export const LoginSchema = z.object({
   password: z.string().trim()
 })
 
-export type SignupState = {
-  errors?: {
+export interface FormState {
+  errors: {}
+  message: string | null;
+}
+
+export interface SignupState extends FormState {
+  errors: {
     username?: string[];
     email?: string[];
+    reemail?: string[];
     password?: string[];
+    repassword?: string[];
   }
-  message?: string | null;
-};
+}
 
-export type LoginState = {
-  errors?: {
+export interface LoginState extends FormState {
+  errors: {
     username?: string[];
     password?: string[];
   }
-  message?: string | null;
 }

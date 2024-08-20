@@ -25,16 +25,19 @@ export async function loginWithCredentials(state: LoginState, formData: FormData
 }
 
 export async function signupWithCredentials(state: SignupState, formData: FormData) : Promise<SignupState> {
+  console.log(formData);
   // Validate sign up input
   const validatedFields = SignupSchema.safeParse({
-    username: formData.get('inputUsername'),
-    email: formData.get('inputEmail'),
-    password: formData.get('inputPassword')
+    username: formData.get('username'),
+    email: formData.get('email'),
+    password: formData.get('password')
   });
 
   if (!validatedFields.success) {
+    console.log(validatedFields.error.flatten().fieldErrors);
     return {
-      errors: validatedFields.error.flatten().fieldErrors
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Invalid fields. Sign up failed.'
     }
   }
 
