@@ -9,7 +9,7 @@ export default function UserHomeScreen() {
   const params = useParams<Params>();
 
   return (
-    <div className="flex-1 items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <p className="mb-4 text-center font-bold">{`Username: ${params.username}`}</p>
       <NavLink href="/">👈 Sign Out</NavLink>
     </div>

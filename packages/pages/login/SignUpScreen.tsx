@@ -15,8 +15,6 @@ export default function SignUpScreen() {
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
 
-  const [shakeErrors, setShakeErrors] = useState(false);
-
   let initialState: SignupState = { errors: {}, message: null };
   const [formState, formAction] = useFormState(signupWithCredentials, initialState)
 

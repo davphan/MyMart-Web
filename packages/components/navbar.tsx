@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { NavLink, PrimaryNavButton } from "./buttons";
+import { useParams } from "next/navigation";
 
 export function HomeNavbar() {
   return (
@@ -18,13 +19,12 @@ export function HomeNavbar() {
 }
 
 export function UserNavbar() {
+  const params: {username: string} = useParams();
   return (
     <div className='flex flex-row items-center justify-between w-screen h-14 px-5 border-solid border-b-2 border-gray-100'>
+      <PrimaryNavButton href='/'>Sign Out</PrimaryNavButton>
       <div className='flex flex-row'>
-        <Link href="/" className='font-bold'>MyMart</Link>
-      </div>
-      <div className='flex flex-row'>
-        <PrimaryNavButton href='/'>Sign Out</PrimaryNavButton>
+        <Link href={`/user/${params.username}`} className='font-bold'>{params.username}</Link>
       </div>
     </div>
   );

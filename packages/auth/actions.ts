@@ -19,6 +19,7 @@ export async function loginWithCredentials(state: LoginState, formData: FormData
   }
 
   const { username, password } = validatedFields.data;
+  console.log(`Username: ${username}\nPassword: ${password}`);
 
   revalidatePath('/user');
   redirect(`/user/${username}`);
