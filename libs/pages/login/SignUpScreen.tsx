@@ -1,10 +1,10 @@
 'use client';
 
-import { signupWithCredentials } from "@/packages/auth/actions";
-import { NavLink, PrimaryButton } from "@/packages/components/buttons";
-import { FormInputText } from "@/packages/components/inputs";
-import { wiggle, wiggle2 } from "@/packages/util/animations";
-import { SignupState } from "@/packages/util/definitions";
+import { signupWithCredentials } from "@/libs/auth/actions";
+import { NavLink, PrimaryButton } from "@/libs/components/buttons";
+import { FormInputText } from "@/libs/components/inputs";
+import { wiggle, wiggle2 } from "@/libs/util/animations";
+import { SignupState } from "@/libs/util/definitions";
 import { useState } from "react";
 import { useFormState } from "react-dom";
 // import { signupWithCredentials as signupWithCredentialsAction} from "../auth/actions";

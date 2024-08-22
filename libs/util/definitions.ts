@@ -13,7 +13,7 @@ export const SignupSchema = z.object({
 })
 
 export const LoginSchema = z.object({
-  username: z.string().trim(),
+  email: z.string().trim(),
   password: z.string().trim()
 })
 
@@ -34,7 +34,7 @@ export interface SignupState extends FormState {
 
 export interface LoginState extends FormState {
   errors: {
-    username?: string[];
+    email?: string[];
     password?: string[];
   }
 }

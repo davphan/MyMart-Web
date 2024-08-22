@@ -1,6 +1,6 @@
 'use client';
 
-import { NavLink } from "@/packages/components/buttons";
+import { NavLink } from "@/libs/components/buttons";
 import { useParams } from "next/navigation";
 
 type Params = { username: string };

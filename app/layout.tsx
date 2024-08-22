@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Providers } from "@/packages/util/providers";
-import { montserrat } from "@/packages/util/fonts";
+// import { AuthContextProvider } from "@/libs/auth/firebase/AuthContext";
+import { montserrat } from "@/libs/util/fonts";
 
 export const metadata: Metadata = {
   title: "MyMart - Web",
@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={montserrat.className}>
-        <Providers>{children}</Providers>
+        {children}
       </body>
     </html>
   );

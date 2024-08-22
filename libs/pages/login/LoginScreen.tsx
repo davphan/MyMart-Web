@@ -1,9 +1,9 @@
 'use client';
 
-import { loginWithCredentials } from "@/packages/auth/actions";
-import { NavLink, PrimaryButton } from "@/packages/components/buttons";
-import { FormInputText } from "@/packages/components/inputs";
-import { LoginState } from "@/packages/util/definitions";
+import { loginWithCredentials } from "@/libs/auth/actions";
+import { NavLink, PrimaryButton } from "@/libs/components/buttons";
+import { FormInputText } from "@/libs/components/inputs";
+import { LoginState } from "@/libs/util/definitions";
 import { useFormState } from "react-dom";
 
 export default function LoginScreen() {

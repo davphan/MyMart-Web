@@ -1,4 +1,4 @@
-import HomeScreen from "@/packages/pages/home/HomeScreen";
+import HomeScreen from "@/libs/pages/home/HomeScreen";
 
 export default function Page() {
   return <HomeScreen />;
