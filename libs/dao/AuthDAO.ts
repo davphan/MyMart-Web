@@ -8,6 +8,7 @@ export abstract class User {
   }
 
   abstract getSessionToken() : Promise<string>;
+  abstract verifyUser() : Promise<Boolean>;
 }
 
 export default abstract class AuthDAO {

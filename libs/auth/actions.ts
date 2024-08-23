@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import AuthDAO, { User } from "../dao/AuthDAO";
 import FirebaseDAOimpl from "../dao/firebase/FirebaseDAO";
+import { decrypt } from "./firebase/session";
 
 const AuthDao: AuthDAO = new FirebaseDAOimpl();
 
@@ -32,6 +33,7 @@ export async function loginWithCredentials(state: LoginState, formData: FormData
   console.log(`Email: ${email}\nPassword: ${password}`);
 
   const user: User = await AuthDao.loginWithCredentials(email, password);
+  console.log(await user.verifyUser());
   revalidatePath('/user');
   redirect(`/user/${user.username}`);
 }

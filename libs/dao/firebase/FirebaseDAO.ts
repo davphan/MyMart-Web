@@ -10,6 +10,7 @@ import {
 import { auth } from "@/libs/auth/firebase/config";
 
 import AuthDAO, { User } from "../AuthDAO"
+import { decrypt } from "@/libs/auth/firebase/session";
 
 export class FirebaseUser implements User {
   uid: string;
@@ -24,6 +25,10 @@ export class FirebaseUser implements User {
 
   async getSessionToken(): Promise<string> {
     return await this.userInfo.getIdToken();
+  }
+
+  async verifyUser(): Promise<Boolean> {
+    return (await decrypt(await this.getSessionToken())).sub === this.uid;
   }
 }
 

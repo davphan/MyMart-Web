@@ -16,7 +16,7 @@ export default function LoginScreen() {
         <h1 className="font-bold text-lg mb-2">Login</h1>
         <FormInputText
           label='Username/Email'
-          name='username'
+          name='email'
         />
         <FormInputText
           label='Password'
