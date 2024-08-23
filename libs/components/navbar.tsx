@@ -7,9 +7,7 @@ import { useParams } from "next/navigation";
 export function HomeNavbar() {
   return (
     <div className='flex flex-row items-center justify-between w-screen h-14 px-5 border-solid border-b-2 border-gray-100'>
-      <div className='flex flex-row'>
-        <Link href="/" className='font-bold'>MyMart</Link>
-      </div>
+      <Link href="/" className='font-bold'>MyMart</Link>
       <div className='flex flex-row'>
         <NavLink href='/login'>Login</NavLink>
         <PrimaryNavButton href='/signup'>Sign Up</PrimaryNavButton>

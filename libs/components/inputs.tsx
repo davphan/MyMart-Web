@@ -17,13 +17,12 @@ export function FormInputText({ label, errors, className, name, type, ...rest } 
           required
         />
         <div id={`${name ? name + '-' : ''}error`} aria-live="polite" aria-atomic="true">
-            {errors &&
-              errors.map((error: string) => (
-                <p className='form-error mt-2 text-sm text-red-500' key={error}>
-                  {error}
-                </p>
-              ))}
-          </div>
+          {errors && errors.map((error: string) => (
+            <p className='form-error mt-2 text-sm text-red-500' key={error}>
+              {error}
+            </p>
+          ))}
+        </div>
       </label>
     </div>
   );

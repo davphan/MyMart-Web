@@ -31,15 +31,9 @@ export async function loginWithCredentials(state: LoginState, formData: FormData
   const { email, password } = validatedFields.data;
   console.log(`Email: ${email}\nPassword: ${password}`);
 
-  try {
-    const user: User = await AuthDao.loginWithCredentials(email, password);
-    revalidatePath('/user');
-    redirect(`/user/${user.username}`);
-  } catch (error) {
-    console.error("Sign in failed.", error);
-    throw error;
-  }
-
+  const user: User = await AuthDao.loginWithCredentials(email, password);
+  revalidatePath('/user');
+  redirect(`/user/${user.username}`);
 }
 
 export async function signupWithCredentials(state: SignupState, formData: FormData) : Promise<SignupState> {
@@ -62,12 +56,7 @@ export async function signupWithCredentials(state: SignupState, formData: FormDa
   const { username, email, password } = validatedFields.data;
   console.log(`Username: ${username}\nEmail: ${email}\nPassword: ${password}`);
 
-  try {
-    const user: User = await AuthDao.signupWithCredentials(username, email, password);
-    revalidatePath('/user');
-    redirect(`/user/${user.username}`);
-  } catch (error) {
-    console.error("Sign in failed.", error);
-    throw error;
-  }
+  const user: User = await AuthDao.signupWithCredentials(username, email, password);
+  revalidatePath('/user');
+  redirect(`/user/${user.username}`);
 }
