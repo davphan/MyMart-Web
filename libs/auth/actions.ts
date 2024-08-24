@@ -3,7 +3,7 @@
 import { SignupState, LoginState, LoginSchema, SignupSchema } from "@/libs/util/definitions";
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import AuthDAO, { User } from "../dao/AuthDAO";
+import AuthDAO, { ClientUser } from "../dao/AuthDAO";
 import FirebaseDAOimpl from "../dao/firebase/FirebaseDAO";
 import { decrypt } from "./firebase/session";
 
@@ -30,16 +30,13 @@ export async function loginWithCredentials(state: LoginState, formData: FormData
   }
 
   const { email, password } = validatedFields.data;
-  console.log(`Email: ${email}\nPassword: ${password}`);
 
-  const user: User = await AuthDao.loginWithCredentials(email, password);
-  console.log(await user.verifyUser());
-  revalidatePath('/user');
-  redirect(`/user/${user.username}`);
+  const user: ClientUser = await AuthDao.loginWithCredentials(email, password);
+  revalidatePath('/dashboard');
+  redirect(`/dashboard/${user.username}`);
 }
 
 export async function signupWithCredentials(state: SignupState, formData: FormData) : Promise<SignupState> {
-  console.log(formData);
   // Validate sign up input
   const validatedFields = SignupSchema.safeParse({
     username: formData.get('username'),
@@ -48,7 +45,6 @@ export async function signupWithCredentials(state: SignupState, formData: FormDa
   });
 
   if (!validatedFields.success) {
-    console.log(validatedFields.error.flatten().fieldErrors);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Invalid fields. Sign up failed.'
@@ -56,9 +52,23 @@ export async function signupWithCredentials(state: SignupState, formData: FormDa
   }
 
   const { username, email, password } = validatedFields.data;
-  console.log(`Username: ${username}\nEmail: ${email}\nPassword: ${password}`);
 
-  const user: User = await AuthDao.signupWithCredentials(username, email, password);
-  revalidatePath('/user');
-  redirect(`/user/${user.username}`);
+  const user: ClientUser = await AuthDao.signupWithCredentials(username, email, password);
+  revalidatePath('/dashboard');
+  redirect(`/dashboard/${user.username}`);
+}
+
+export async function logOut() {
+  await AuthDao.logOut();
+  redirect('/');
+}
+
+export async function getUserInfo() {
+  const user = AuthDao.currentUser
+  console.log(user)
+  return AuthDao.currentUser;
+}
+
+export async function isLoggedIn() {
+  return AuthDao.currentUser ? true : false;
 }

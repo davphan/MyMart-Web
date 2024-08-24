@@ -2,46 +2,70 @@ import {
   createUserWithEmailAndPassword, signInWithEmailAndPassword,
   onAuthStateChanged as _onAuthStateChanged,
   type User as _FirebaseUser,
-  GoogleAuthProvider,
-  signInWithPopup,
   UserCredential,
-  updateProfile
+  updateProfile,
+  onAuthStateChanged
 } from "firebase/auth";
 import { auth } from "@/libs/auth/firebase/config";
 
-import AuthDAO, { User } from "../AuthDAO"
+import AuthDAO, { ClientUser } from "../AuthDAO"
 import { decrypt } from "@/libs/auth/firebase/session";
 
-export class FirebaseUser implements User {
-  uid: string;
-  username: string | null;
-  userInfo: _FirebaseUser;
+// export class FirebaseUser implements ClientUser {
+//   uid: string;
+//   username: string | null;
+//   userInfo: _FirebaseUser;
 
-  constructor(user: _FirebaseUser) {
-    this.uid = user.uid;
-    this.username = user.displayName;
-    this.userInfo = user;
-  }
+//   constructor(user: _FirebaseUser) {
+//     this.uid = user.uid;
+//     this.username = user.displayName;
+//     this.userInfo = user;
+//   }
 
-  async getSessionToken(): Promise<string> {
-    return await this.userInfo.getIdToken();
-  }
+//   async getSessionToken(): Promise<string> {
+//     return await this.userInfo.getIdToken();
+//   }
 
-  async verifyUser(): Promise<Boolean> {
-    return (await decrypt(await this.getSessionToken())).sub === this.uid;
-  }
-}
-
+//   async verifyUser(): Promise<Boolean> {
+//     return (await decrypt(await this.getSessionToken())).sub === this.uid;
+//   }
+// }
 export default class FirebaseDAOimpl implements AuthDAO {
-  async loginWithCredentials(email: string, password: string) : Promise<User> {
-    const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
-    return new FirebaseUser(userCredential.user);
+  currentUser: ClientUser | null = null;
+
+  async loginWithCredentials(email: string, password: string) : Promise<ClientUser> {
+    await signInWithEmailAndPassword(auth, email, password);
+    return new Promise((resolve, reject) => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          console.log("LOGGED IN")
+          unsubscribe();
+          this.currentUser = {
+            uid: user.uid,
+            username: user.displayName,
+          }
+          resolve(this.currentUser);
+        }
+      }, reject);
+    });
   }
 
-  async signupWithCredentials(username: string, email: string, password: string) : Promise<User> {
+  async signupWithCredentials(username: string, email: string, password: string) : Promise<ClientUser> {
     const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(userCredential.user, { displayName: username });
-    return new FirebaseUser(userCredential.user);
+    return new Promise((resolve, reject) => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          console.log("LOGGED IN")
+          unsubscribe();
+          this.currentUser = {
+            uid: user.uid,
+            username: user.displayName,
+          }
+          resolve(this.currentUser);
+        }
+      }, reject);
+    });
   }
 
   async logOut() : Promise<void> {

@@ -1,41 +1,29 @@
 'use client';
 
+import { getUserInfo, isLoggedIn } from "@/libs/auth/actions";
 import { NavLink, PrimaryButton } from "@/libs/components/buttons";
+import { User } from "@/libs/dao/AuthDAO";
 import { useParams } from "next/navigation";
-import { auth } from "@/libs/auth/firebase/config";
-import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { useState } from "react";
 
 type Params = { username: string };
 
 export default function UserHomeScreen() {
   const params = useParams<Params>();
-  const [jwt, setJwt] = useState('Click da button...');
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log(user);
-    } else {
-      console.log("No user");
-    }
-  });
-
-  async function showJWT() {
-    console.log(auth);
-    if (auth.currentUser) {
-      const token = await auth.currentUser.getIdToken()
-      setJwt(token);
-    } else {
-      setJwt("Not signed in");
-    }
-  }
+  const [user, setUser] = useState<User | null>(null);
 
   return (
     <div className="flex flex-col items-center justify-center">
       <p className="mb-4 text-center font-bold">{`Username: ${params.username}`}</p>
-      <PrimaryButton onClick={async () => await showJWT()}>Show JWT</PrimaryButton>
-      <p>{jwt}</p>
-      <NavLink href="/">👈 Sign Out</NavLink>
+      <PrimaryButton onClick={async () => {
+        setUser(await getUserInfo());
+        console.log(user);
+      }}>
+        Update User
+      </PrimaryButton>
+      <p>{user ? user.username : "update uer ^"}</p>
+      {/* <PrimaryButton onClick={async () => {console.log(await isLoggedIn())}}>Show JWT</PrimaryButton> */}
+      <NavLink href="/">👈 Go to public home page</NavLink>
     </div>
   )
 }
