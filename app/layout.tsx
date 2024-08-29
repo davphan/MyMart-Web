@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-// import { AuthContextProvider } from "@/libs/auth/firebase/AuthContext";
 import { montserrat } from "@/libs/util/fonts";
-import { HomeNavbar, Navbar, UserNavbar } from "@/libs/components/navbar";
+import { Navbar } from "@/libs/components/navbar";
 import { auth } from "@/libs/auth/auth";
 
 export const metadata: Metadata = {
@@ -19,7 +18,6 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`flex h-screen flex-col ${montserrat.className}`}>
-        {/* { session ? <HomeNavbar /> : <UserNavbar /> } */}
         <Navbar user={session?.user}/>
         <div className="flex-grow p-6 md:overflow-y-auto md:p-12">{children}</div>
       </body>
