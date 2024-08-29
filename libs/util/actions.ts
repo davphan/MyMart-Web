@@ -3,6 +3,8 @@
 import { signIn, signOut } from '@/libs/auth/auth';
 import { AuthError } from 'next-auth';
 import { FormState, LoginSchema, LoginState, SignupSchema, SignupState } from './definitions';
+import { sql } from '@vercel/postgres';
+import { saltAndHash } from './passwords';
 
 /**
  * Login using email and password credentials and redirect to the dashboard on
@@ -44,18 +46,12 @@ export async function loginWithCredentials(
     };
   } catch (error) {
     if (error instanceof AuthError) {
-      switch (error.type) {
-        case 'CredentialsSignin':
-          return {
-            errors:{},
-            message: 'Invalid credentials.'
-          };
-        default:
-          return {
-            errors: {},
-            message: 'Something went wrong.'
-          };
-      }
+      return {
+        errors:{
+          server: ["Username or password incorrect"]
+        },
+        message: error.message
+      };
     }
     throw error;
   }
@@ -89,9 +85,14 @@ export async function signupWithCredentials(
     }
 
     // TODO: save user data into database
+    const { username, email, password } = validatedFields.data;
+    const hashedPassword = saltAndHash(password)
+    await sql`
+      INSERT INTO user_login_info (username, email, password)
+      VALUES (${username}, ${email.toLowerCase()}, ${hashedPassword});
+    `;
 
     // Try signing in the current user
-    const { username, email, password } = validatedFields.data;
     await signIn('credentials', {
       email: email,
       password: password,
@@ -104,18 +105,12 @@ export async function signupWithCredentials(
     };
   } catch (error) {
     if (error instanceof AuthError) {
-      switch (error.type) {
-        case 'CredentialsSignin':
-          return {
-            errors:{},
-            message: 'Invalid credentials.'
-          };
-        default:
-          return {
-            errors: {},
-            message: 'Something went wrong.'
-          };
-      }
+      return {
+        errors:{
+          server: ['Login after sign up failed, please try to login again'],
+        },
+        message: error.message
+      };
     }
     throw error;
   }

@@ -116,6 +116,13 @@ export default function SignUpScreen() {
           onChange={e => matchPasswords(e.target.value)}
           errors={formState.errors.repassword}
         />
+        {formState.errors.server &&
+        <div className="flex flex-col justify-center items-center w-full">
+          {formState.errors.server.map((msg: string) => (
+            <p className="text-wrap form-error mt-2 text-sm text-red-500">{msg}</p>
+          ))}
+        </div>
+        }
         <PrimaryButton className="m-3" onClick={e => submitForm(e)}>
           Sign Up
         </PrimaryButton>

@@ -1,10 +1,6 @@
-import bcrypt from 'bcrypt';
+import { genSaltSync, hashSync } from "bcrypt-ts";
 
-const saltRounds = 10;
-
-export function encryptPassword(password: string) {
-  bcrypt.hash(password, saltRounds, function(err: Error | undefined, hash: string) {
-    if (err) throw err;
-
-  })
+export function saltAndHash(password: string) {
+  const saltRounds = 10;
+  return hashSync(password, saltRounds);
 }

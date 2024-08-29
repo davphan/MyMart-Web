@@ -20,7 +20,7 @@ export const SignupSchema = z.object({
  */
 export const LoginSchema = z.object({
   email: z
-    .string({ required_error: "Email is required" })
+    .string({ required_error: "Username/Email is required" })
     .trim(),
   password: z
     .string({ required_error: "Password is required" })
@@ -45,6 +45,7 @@ export interface SignupState extends FormState {
     reemail?: string[];
     password?: string[];
     repassword?: string[];
+    server?: string[];
   }
 }
 
@@ -55,5 +56,17 @@ export interface LoginState extends FormState {
   errors: {
     email?: string[];
     password?: string[];
+    server?: string[];
   }
+}
+
+/**
+ * Schema for user login info table.
+ */
+export type UserLoginInfoSchema = {
+  id: string,
+  username: string,
+  email: string,
+  password: string,
+  image: string,
 }
