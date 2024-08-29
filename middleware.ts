@@ -1,46 +1,34 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getUserInfo, isLoggedIn } from './libs/auth/actions'
+import { auth } from "@/libs/auth/auth";
+import { NextRequest, NextResponse } from "next/server";
 
-// Specify protected and public routes
-const protectedRoutes = ['/dashboard']
-const publicRoutes = ['/login', '/signup', '/']
+const protectedRoutes = ['/dashboard'];
+const publicRoutes = ['/', '/login', 'signup'];
+const loginRoutes = ['/login', '/signup'];
 
 export default async function middleware(req: NextRequest) {
-  // Check if the current route is protected or public
-  const path = req.nextUrl.pathname
-  const isProtectedRoute = protectedRoutes.includes(path)
-  const isPublicRoute = publicRoutes.includes(path)
+  // Check whether route is protected or not
+  const path: string = req.nextUrl.pathname;
+  const isProtectedRoute: Boolean = protectedRoutes.includes(path);
+  const isPublicRoute = publicRoutes.includes(path);
+  const isLoginRoute = loginRoutes.includes(path);
 
-  const loggedIn = await isLoggedIn();
-  // await getUserInfo();
+  // Get session info
+  const session = await auth();
 
-  // console.log(
-  //   `    -------------------
-  //   Public: ${isPublicRoute}
-  //   Protected: ${isProtectedRoute}
-  //   Loggedin: ${loggedIn}
-  //   -------------------`
-  // );
-
-  // Redirect to /login if the user is not authenticated
-  if (isProtectedRoute && !loggedIn) {
-    return NextResponse.redirect(new URL('/login', req.nextUrl))
+  // For protected routes, check if user is authenticated and the correct user
+  if (isProtectedRoute && !session) {
+    return NextResponse.redirect(new URL('/login', req.nextUrl));
   }
 
-  // Redirect to /dashboard if the user is authenticated
-  if (
-    isPublicRoute &&
-    loggedIn &&
-    !req.nextUrl.pathname.startsWith('/dashboard')
-  ) {
-    return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
+  // For login and signup routes, if the user is signed in then redirect to dashboard
+  if (isLoginRoute && session) {
+    return NextResponse.redirect(new URL('/dashboard', req.nextUrl));
   }
 
-  // Continue on public routes and authenticated protected routes
-  return NextResponse.next()
+  return NextResponse.next();
 }
 
-// Routes Middleware should not run on
 export const config = {
+  // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
   matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
-}
+};

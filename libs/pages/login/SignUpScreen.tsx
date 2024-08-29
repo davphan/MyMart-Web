@@ -1,23 +1,28 @@
 'use client';
 
-import { signupWithCredentials } from "@/libs/auth/actions";
 import { NavLink, PrimaryButton } from "@/libs/components/buttons";
 import { FormInputText } from "@/libs/components/inputs";
-import { wiggle, wiggle2 } from "@/libs/util/animations";
+import { signupWithCredentials } from "@/libs/util/actions";
+import { wiggle } from "@/libs/util/animations";
 import { SignupState } from "@/libs/util/definitions";
 import { useState } from "react";
 import { useFormState } from "react-dom";
-// import { signupWithCredentials as signupWithCredentialsAction} from "../auth/actions";
 
 export default function SignUpScreen() {
+  // Text input states
   const [email, setEmail] = useState('');
   const [reEmail, setReEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
 
+  // Form action and states
   let initialState: SignupState = { errors: {}, message: null };
   const [formState, formAction] = useFormState(signupWithCredentials, initialState)
 
+  /**
+   * Checks if the the re-email value is the same as the current email value.
+   * @param val String to compare against current email.
+   */
   function matchEmails(val: string) {
     setReEmail(val)
     if (email !== val) {
@@ -27,6 +32,10 @@ export default function SignUpScreen() {
     }
   }
 
+  /**
+   * Checks if the the re-password value is the same as the current password value.
+   * @param val String to compare against current password.
+   */
   function matchPasswords(val: string) {
     setRePassword(val)
     if (password !== val) {
@@ -36,10 +45,19 @@ export default function SignUpScreen() {
     }
   }
 
+  /**
+   * Checks if there are any form errors present, otherwise submits the form.
+   * @param e Button click event.
+   */
   function submitForm(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
+
+    // Ensure emails and passwords match up
     matchEmails(reEmail);
     matchPasswords(rePassword);
+
+    // If errors are present, show animation on each active error and prevent
+    // the form from submitting
     if (Object.keys(formState.errors).length) {
       const errorComponents: NodeListOf<Element> = document.querySelectorAll('.form-error');
       errorComponents.forEach((component) => {

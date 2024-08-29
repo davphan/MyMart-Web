@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+/**
+ * Schema definition for the sign up form.
+ */
 export const SignupSchema = z.object({
   username: z.string().trim(),
   email: z.string().email().trim(),
@@ -12,16 +15,29 @@ export const SignupSchema = z.object({
     .trim()
 })
 
+/**
+ * Schema definition for the login form.
+ */
 export const LoginSchema = z.object({
-  email: z.string().trim(),
-  password: z.string().trim()
-})
+  email: z
+    .string({ required_error: "Email is required" })
+    .trim(),
+  password: z
+    .string({ required_error: "Password is required" })
+    .trim()
+});
 
+/**
+ * Error and message to describe the state of a form.
+ */
 export interface FormState {
   errors: {}
   message: string | null;
 }
 
+/**
+ * State specifically for the sign up form.
+ */
 export interface SignupState extends FormState {
   errors: {
     username?: string[];
@@ -32,6 +48,9 @@ export interface SignupState extends FormState {
   }
 }
 
+/**
+ * State specifically for the login form.
+ */
 export interface LoginState extends FormState {
   errors: {
     email?: string[];
