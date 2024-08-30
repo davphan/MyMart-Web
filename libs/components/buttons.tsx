@@ -17,7 +17,12 @@ export function PrimaryNavButton({ children, className, ...rest } : NavLinkProps
   return (
     <Link
       {...rest}
-      className={`px-3 py-2 rounded-full bg-primary hover:opacity-80 text-on_primary ${className}`}
+      className={`
+        px-3 py-2 rounded-full bg-primary text-on_primary border-2 border-primary h-fit
+        text-sm
+        sm:text-base
+        hover:opacity-80 ${className}
+      `}
     >
       {children}
     </Link>
@@ -31,7 +36,12 @@ export function SecondaryNavButton({ children, className, ...rest}: NavLinkProps
   return (
     <Link
       {...rest}
-      className={`px-3 py-2 text-primary hover:opacity-80 rounded-full bg-on_primary border-2 border-primary/70 ${className}`}
+      className={`
+        px-3 py-2 rounded-full bg-on_primary text-primary border-2 border-primary/70 h-fit box-border
+        text-sm
+        sm:text-base
+        hover:opacity-80 ${className}
+      `}
     >
       {children}
     </Link>
@@ -45,7 +55,12 @@ export function NavLink({ children, className, ...rest} : NavLinkProps) {
   return (
     <Link
       {...rest}
-      className={`px-3 py-2 text-primary hover:opacity-80 ${className}`}
+      className={`
+        px-3 py-2 text-primary h-fit
+        text-sm font-medium
+        sm:text-base
+        hover:opacity-80 ${className}
+      `}
     >
       {children}
     </Link>

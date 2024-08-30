@@ -15,7 +15,8 @@ export default function Navbar({ user } : { user: User | undefined }) {
     <div
       className={`
         fixed top-0 flex flex-row items-center justify-between w-screen h-14
-        px-5 py-7 border-solid border-b-2 border-gray-100 bg-on_primary z-50
+        px-3 py-7 border-solid border-b-2 border-gray-100 bg-on_primary z-50
+        sm:pr-7
         md:h-20 md:pr-9
       `}
     >
@@ -30,11 +31,11 @@ export default function Navbar({ user } : { user: User | undefined }) {
     <>
       <Link
         href="/"
-        className='font-bold md:text-2xl'
+        className='font-bold ml-2 md:text-2xl'
       >
         MyMart
       </Link>
-      <div className='flex flex-row md:gap-5'>
+      <div className='flex flex-row items-center sm:gap-2 md:gap-5'>
         <NavLink href='/login'>Login</NavLink>
         <PrimaryNavButton href='/signup'>Sign Up</PrimaryNavButton>
       </div>
