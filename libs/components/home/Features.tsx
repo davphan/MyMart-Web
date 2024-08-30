@@ -1,6 +1,6 @@
 export default function Features() {
   return (
-    <div className="flex flex-col justify-center items-center m-20 gap-10">
+    <div className="flex flex-col justify-center items-center p-20 gap-10 w-screen">
       <h1 className="font-semibold text-2xl">BETA</h1>
       <div className="flex flex-col items-center w-80 gap-2">
         <p className="text-center">

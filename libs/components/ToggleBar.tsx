@@ -8,18 +8,21 @@ export default function ToggleBar({
   setCurrentOption: (option: number) => void;
   className?: string;
 }) {
+  const positions = ['left-0', 'left-24'];
 
   return(
-    <div className={`relative flex flex-row justify-center w-fit rounded-full bg-on_secondary ${className}`}>
-      <div className={`absolute left-${24 * currentOption} rounded-full w-24 h-10 bg-on_primary`}/>
+    <div
+      className={`relative flex flex-row justify-center w-fit rounded-full bg-on_secondary ${className}`}
+    >
+      <div className={`absolute ${positions[currentOption]} rounded-full w-24 h-10 bg-on_primary`}/>
       {options.map((option, index) => (
-        <div
+        <button
           className={`z-10 w-24 h-10 leading-10 text-center hover:text-primary ${index === currentOption ? 'text-on_secondary' : 'text-on_primary'}`}
-          key={option}
+          key={index}
           onClick={() => {setCurrentOption(index)}}
         >
           {option}
-        </div>
+        </button>
       ))}
     </div>
   );

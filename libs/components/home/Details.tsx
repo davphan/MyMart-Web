@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import ToggleBar from "./ToggleBar";
+import { useState } from "react";
+import ToggleBar from "../ToggleBar";
 import Overview from "./Overview";
 import Features from "./Features";
 
