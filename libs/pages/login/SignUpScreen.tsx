@@ -1,6 +1,7 @@
 'use client';
 
 import { NavLink, PrimaryButton } from "@/libs/components/buttons";
+import Footer from "@/libs/components/Footer";
 import { FormInputText } from "@/libs/components/inputs";
 import { signupWithCredentials } from "@/libs/util/actions";
 import { wiggle } from "@/libs/util/animations";
@@ -10,6 +11,7 @@ import { useFormState } from "react-dom";
 
 export default function SignUpScreen() {
   // Text input states
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [reEmail, setReEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -69,14 +71,18 @@ export default function SignUpScreen() {
   }
 
   return (
-    <div className='flex justify-center items-center'>
-      <form action={formAction} className='flex flex-col items-center rounded-lg bg-primary_card p-5'>
+    <div className='h-full flex flex-col items-center'>
+      <form action={formAction} className='flex flex-col items-center rounded-lg bg-primary_card p-5 my-20 w-72'>
         <h1 className="font-bold text-lg">Sign Up</h1>
         <FormInputText
           label='Username'
           name='username'
           errors={formState.errors.username}
-          onChange={e => delete formState.errors.username}
+          onChange={(e) => {
+            setUsername(e.target.value);
+            delete formState.errors.username;
+            delete formState.errors.server;
+          }}
         />
         <FormInputText
           label='Email'
@@ -86,6 +92,7 @@ export default function SignUpScreen() {
             setEmail(e.target.value);
             delete formState.errors.email;
             delete formState.errors.reemail;
+            delete formState.errors.server;
           }}
           errors={formState.errors.email}
         />
@@ -94,6 +101,7 @@ export default function SignUpScreen() {
           value={reEmail}
           onChange={(e) => {
             matchEmails(e.target.value);
+            delete formState.errors.server;
           }}
           errors={formState.errors.reemail}
         />
@@ -106,6 +114,7 @@ export default function SignUpScreen() {
             setPassword(e.target.value);
             delete formState.errors.password;
             delete formState.errors.repassword;
+            delete formState.errors.server;
           }}
           errors={formState.errors.password}
         />
@@ -113,7 +122,10 @@ export default function SignUpScreen() {
           label='Re-Enter Password'
           type='password'
           value={rePassword}
-          onChange={e => matchPasswords(e.target.value)}
+          onChange={(e) => {
+            matchPasswords(e.target.value);
+            delete formState.errors.server;
+          }}
           errors={formState.errors.repassword}
         />
         {formState.errors.server &&
@@ -126,8 +138,11 @@ export default function SignUpScreen() {
         <PrimaryButton className="m-3" onClick={e => submitForm(e)}>
           Sign Up
         </PrimaryButton>
+        <p className="text-sm pt-5">Already have an account?</p>
+        <NavLink href='/login' className="pb-5">Login</NavLink>
         <NavLink href='/'>Go Home</NavLink>
       </form>
+      <Footer />
     </div>
   );
 }

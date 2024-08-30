@@ -83,9 +83,31 @@ export async function signupWithCredentials(
         message: "Invalid fields given. Signup failed."
       }
     }
-
-    // TODO: save user data into database
     const { username, email, password } = validatedFields.data;
+
+    // Check if username or email already exists
+    const { rows } = await sql`
+      SELECT * FROM user_login_info
+      WHERE username = ${username}
+      OR email = ${email.toLowerCase()};
+    `;
+    if (rows.length > 0) {
+      const res: SignupState = {
+        errors: {},
+        message: "Invalid credentials"
+      }
+      rows.forEach((row) => {
+        if (!res.errors.username && row.username === username) {
+          res.errors.username = ["Username already taken."];
+        }
+        if (!res.errors.email && row.email === row.email.toLowerCase()) {
+          res.errors.email = ["Email already taken."];
+        }
+      })
+      return res;
+    }
+
+    // Save user data into database
     const hashedPassword = saltAndHash(password)
     await sql`
       INSERT INTO user_login_info (username, email, password)
