@@ -2,7 +2,13 @@
 
 export default function Footer() {
   return (
-    <div className="relative bottom-0 bg-on_primary flex flex-row w-screen border-solid border-t-2 border-gray-100 p-8 gap-10">
+    <div
+      className={`
+        relative bottom-0 bg-on_primary flex flex-row w-screen border-solid
+        border-t-2 border-gray-100 p-8 gap-10
+        md:p-12 md:px-24
+      `}
+    >
       <div className="flex flex-col gap-2">
         <h1
           className="text-on_secondary text-sm border-b-2 border-on_secondary w-32"

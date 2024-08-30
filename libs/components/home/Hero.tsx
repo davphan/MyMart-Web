@@ -5,14 +5,14 @@ export default function Hero() {
     <div className="relative flex">
       <img
         src="https://images.pexels.com/photos/868110/pexels-photo-868110.jpeg?cs=srgb&dl=pexels-wdnet-868110.jpg&fm=jpg"
-        className="relative w-full top-0 left-0"
+        className="relative w-screen top-0 left-0 md:object-cover md:h-screen"
       />
       <div className="absolute flex flex-col justify-center items-center w-1/2 right-0 bg-white z-10 p-10 h-full">
         <div className="flex flex-col gap-3">
-          <h1 className="text-5xl">Cheaper,</h1>
-          <h1 className="text-5xl">Faster,</h1>
-          <h1 className="text-5xl">More Convenient</h1>
-          <p className="pt-3">
+          <h1 className="text-5xl md:text-6xl">Cheaper,</h1>
+          <h1 className="text-5xl md:text-6xl">Faster,</h1>
+          <h1 className="text-5xl md:text-6xl">More Convenient</h1>
+          <p className="pt-3 md:text-xl">
             Sign up or learn more about how you can change your grocery
             shopping experience.
           </p>

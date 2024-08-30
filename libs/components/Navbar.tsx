@@ -12,7 +12,13 @@ import { User } from "next-auth";
  */
 export default function Navbar({ user } : { user: User | undefined }) {
   return (
-    <div className='fixed top-0 flex flex-row items-center justify-between w-screen h-14 px-5 py-7 border-solid border-b-2 border-gray-100 bg-on_primary z-50'>
+    <div
+      className={`
+        fixed top-0 flex flex-row items-center justify-between w-screen h-14
+        px-5 py-7 border-solid border-b-2 border-gray-100 bg-on_primary z-50
+        md:h-20 md:pr-9
+      `}
+    >
     { user ?
     <>
       <PrimaryButton onClick={async () => {await logout()}}>Log Out</PrimaryButton>
@@ -22,8 +28,13 @@ export default function Navbar({ user } : { user: User | undefined }) {
     </>
     :
     <>
-      <Link href="/" className='font-bold'>MyMart</Link>
-      <div className='flex flex-row'>
+      <Link
+        href="/"
+        className='font-bold md:text-2xl'
+      >
+        MyMart
+      </Link>
+      <div className='flex flex-row md:gap-5'>
         <NavLink href='/login'>Login</NavLink>
         <PrimaryNavButton href='/signup'>Sign Up</PrimaryNavButton>
       </div>
