@@ -16,8 +16,8 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`flex h-screen flex-col ${montserrat.className}`}>
+    <html lang="en" suppressHydrationWarning className="overflow-x-hidden">
+      <body className={`pt-14 h-screen ${montserrat.className}`}>
         <Navbar user={session?.user}/>
         {children}
       </body>

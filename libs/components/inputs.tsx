@@ -11,7 +11,7 @@ export function FormInputText({ label, errors, className, name, type, ...rest } 
         {label}
         <input
           {...rest}
-          className='bg-on_primary rounded-xl py-1 px-2'
+          className='bg-gray-100 rounded-full py-1 px-2'
           type={type ? type : 'text'}
           name={name}
           required
