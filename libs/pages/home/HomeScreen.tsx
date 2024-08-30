@@ -1,9 +1,13 @@
 'use client';
 
+import Footer from "@/libs/components/Footer";
+import Hero from "@/libs/components/home/Hero";
+
 export default function HomeScreen() {
   return (
-    <div className="flex items-center justify-center p-3">
-      <h1 className="w-fit">Welcome to MyMart.</h1>
+    <div className="flex flex-col items-center justify-center">
+      <Hero />
+      <Footer />
     </div>
   )
 }

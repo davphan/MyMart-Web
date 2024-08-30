@@ -10,9 +10,9 @@ import { User } from "next-auth";
  * information if signed in.
  * @param user Current signed in user.
  */
-export function Navbar({ user } : { user: User | undefined }) {
+export default function Navbar({ user } : { user: User | undefined }) {
   return (
-    <div className='flex flex-row items-center justify-between w-screen h-14 px-5 border-solid border-b-2 border-gray-100'>
+    <div className='sticky flex flex-row items-center justify-between w-screen h-14 px-5 py-7 border-solid border-b-2 border-gray-100'>
     { user ?
     <>
       <PrimaryButton onClick={async () => {await logout()}}>Log Out</PrimaryButton>

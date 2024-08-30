@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { montserrat } from "@/libs/util/fonts";
-import { Navbar } from "@/libs/components/navbar";
+import Navbar from "@/libs/components/Navbar";
 import { auth } from "@/libs/auth/auth";
 
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`flex h-screen flex-col ${montserrat.className}`}>
         <Navbar user={session?.user}/>
-        <div className="flex-grow p-6 md:overflow-y-auto md:p-12">{children}</div>
+        {children}
       </body>
     </html>
   );

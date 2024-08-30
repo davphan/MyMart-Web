@@ -16,7 +16,7 @@ const config: Config = {
         'primary_card': '#EADDFF',
         'on_primary_card': '#000000',
         'secondary': '#625B71',
-        'on_secondary': '#FFFFFF',
+        'on_secondary': '#363044',
       },
     },
   },
